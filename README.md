@@ -2,8 +2,8 @@
 %%{init: {
   'flowchart': {
     'curve': 'monotoneX',
-    'nodeSpacing': 20,
-    'rankSpacing': 30,
+    'nodeSpacing': 30,
+    'rankSpacing': 50,
     'padding': 10
   }
 }}%%
@@ -32,6 +32,7 @@ flowchart LR
     end
 
     subgraph UI["<b>ui/</b>"]
+        direction TB
         Mapper["<b>EmailRowMapper</b><br/><b>EmailDetailMapper</b>"]:::uiNode
         VM["<b>InboxViewModel</b><br/><b>DetailViewModel</b>"]:::uiNode
         Screen["<b>InboxScreen</b><br/><b>DetailScreen</b>"]:::uiNode
@@ -42,9 +43,10 @@ flowchart LR
         Screen --> Content
     end
 
-    %% Cross-layer flow: repository publishes domain models, the UI mappers consume them
+    %% Cross-layer flow. The edge targets the ui/ subgraph (not a node inside it) so Mermaid
+    %% honours the subgraph's TB direction and stacks the UI chain vertically.
     Repo --> Model
-    Model --> Mapper
+    Model --> UI
 
     %% Node Styles (GitHub Light & Dark mode safe)
     classDef dataNode fill:#ffffff,stroke:#16a34a,stroke-width:1.5px,color:#0f172a
